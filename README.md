@@ -29,21 +29,6 @@ Uygun firsat turleri:
 - Agency/service
 - Template veya productized service
 
-## Workflow Dosyalari
-
-- `dev_reddit_pain_point_business_opportunity_scanner.json`
-  - n8n'e import edilecek nihai workflow.
-- `workflow_tree.html`
-  - Workflow'un lokal gorsel agac/topoloji gorunumu.
-- `n8n_2978_original_workflow.json`
-  - Baz alinan orijinal n8n template exportu.
-- `n8n_2978_api.json`
-  - n8n template API cevabi.
-- `n8n_2978_page.html`
-  - Indirilen template sayfasi.
-- `n8n_2978_user_export.json`
-  - Kullanici tarafindan paylasilan workflow exportu.
-
 ## Workflow Mantigi
 
 ### 1. Build Reddit Search Matrix
@@ -362,4 +347,3 @@ Bu workflow:
 - AI raporlarini insan review'u olmadan karar mekanizmasi yapmaz
 
 Bu workflow'un asil gorevi kaliteli sinyal uretmektir. Nihai karar icin manuel analiz, kullanici gorusmesi ve pazar validasyonu gerekir.
-
