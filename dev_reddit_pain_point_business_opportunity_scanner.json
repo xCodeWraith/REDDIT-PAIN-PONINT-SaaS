@@ -1,0 +1,821 @@
+{
+  "id": "Xx4zOjRFLI8W9PiC",
+  "meta": {
+    "instanceId": "481a48d2941aac0cf9462ce6b93b63097e0c030779c473519ff7c167c8bed8f7",
+    "templateCredsSetupCompleted": true,
+    "dev_customization": "DEV. @xCodeWraith - Reddit pain point + business opportunity scanner; customized from n8n template 2978 and local reddit-pain-point extractor prompt architecture."
+  },
+  "name": "DEV Reddit Pain Point & SaaS Opportunity Scanner",
+  "tags": [],
+  "nodes": [
+    {
+      "id": "52bdf7eb-ee1a-43c5-a0ad-199283003892",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -1120,
+        260
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "id": "e9a000b6-2f35-4928-a8d8-aa2d8cc27513",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -20,
+        0
+      ],
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "credential-id",
+          "name": "openAiApi Credential"
+        }
+      },
+      "typeVersion": 1.2
+    },
+    {
+      "id": "cd38a8b6-1369-4209-a80e-9e9949df49c0",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        720,
+        -40
+      ],
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "credential-id",
+          "name": "openAiApi Credential"
+        }
+      },
+      "typeVersion": 1.2
+    },
+    {
+      "id": "00d17970-3195-4290-bb02-9956f31ecc8f",
+      "name": "Pain Point + Opportunity Report",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        980,
+        260
+      ],
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "options": {},
+        "messages": {
+          "values": [
+            {
+              "content": "=Analyze this Reddit post as a senior SaaS/app opportunity researcher.\n\nUse the post only as evidence. Do not invent facts. If evidence is weak, mark it as weak. Prioritize practical app, SaaS, automation, marketplace, service, Chrome extension, or internal-tool opportunities.\n\nReddit metadata:\n- Source category: {{ $json.source_category }}\n- Subreddit: {{ $json.subreddit }}\n- Title: {{ $json.title }}\n- Upvotes: {{ $json.upvotes }}\n- Comments: {{ $json.comments }}\n- Date: {{ $json.date }}\n- URL: {{ $json.url }}\n\nPost body:\n{{ $json.reddit_post_body }}\n\nReturn a compact structured report in this exact Markdown format:\n\n## Pain Point\nConcrete pain in one sentence.\n\n## Evidence From Post\n- User language or paraphrase from the post.\n- What makes this a real opportunity signal.\n\n## Buyer Segment\nSpecific buyer/user segment. Include company type, role, and likely budget sensitivity if inferable.\n\n## Opportunity Type\nChoose one primary type: SaaS, mobile app, internal tool, marketplace, automation workflow, Chrome extension, data product, agency/service, template/productized service.\n\n## Product / Service Ideas\n1. Idea name - what it does - why it fits this pain.\n2. Idea name - what it does - why it fits this pain.\n3. Idea name - what it does - why it fits this pain.\n\n## Opportunity Score\nUrgency: 1-5\nFrequency: 1-5\nWillingness to pay: 1-5\nMarket breadth: 1-5\nCompetition risk: 1-5\nBuild difficulty: 1-5\nOverall: 1-10\n\n## MVP Shape\n- Smallest useful version\n- Key workflow/screens\n- Required integrations or data sources\n\n## Validation Plan\n- Fastest manual validation step\n- 3 questions to ask target users\n- What evidence would confirm demand\n- What evidence would reject the idea\n\n## First Offer\nA simple paid offer that could be tested within 7 days.\n\n## Risk Notes\nLegal, privacy, platform, data-quality, false-positive, or go-to-market risks."
+            }
+          ]
+        }
+      },
+      "credentials": {
+        "openAiApi": {
+          "id": "credential-id",
+          "name": "openAiApi Credential"
+        }
+      },
+      "typeVersion": 1.8
+    },
+    {
+      "id": "9bcbd874-5eed-47ce-9714-1aec71537fe2",
+      "name": "Post Summarization",
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "position": [
+        980,
+        80
+      ],
+      "parameters": {
+        "options": {}
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "60991de9-ad29-484c-9233-966cc1980a03",
+      "name": "Merge Input",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        480,
+        260
+      ],
+      "parameters": {
+        "mode": "combine",
+        "options": {},
+        "combineBy": "combineByPosition"
+      },
+      "typeVersion": 3
+    },
+    {
+      "id": "f78fbea9-5f7f-4a88-bde1-7c3f01613892",
+      "name": "Output The Results",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        1500,
+        220
+      ],
+      "parameters": {
+        "columns": {
+          "value": {
+            "Subreddit": "={{ $json.subreddit }}",
+            "Subreddit_size": "={{ $json.subreddit_subscribers }}",
+            "Post_date": "={{ $json.date }}",
+            "Upvotes": "={{ $json.upvotes }}",
+            "Comments": "={{ $json.comments }}",
+            "Post_title": "={{ $json.title }}",
+            "Post_url": "={{ $json.url }}",
+            "Post_summary": "={{ $json.response.text }}",
+            "Opportunity_report": "={{ $json.message.content }}",
+            "Reddit_id": "={{ $json.reddit_id }}",
+            "Source_category": "={{ $json.source_category }}",
+            "Opportunity_surface": "={{ $json.opportunity_surface }}",
+            "Post_body_excerpt": "={{ $json.reddit_post_body.slice(0, 500) }}"
+          },
+          "schema": [
+            {
+              "id": "Subreddit",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Subreddit",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subreddit_size",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Subreddit_size",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_date",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Post_date",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Upvotes",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Upvotes",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comments",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Comments",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_title",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Post_title",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_url",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Post_url",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_summary",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Post_summary",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Opportunity_report",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Opportunity_report",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reddit_id",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Reddit_id",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source_category",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Source_category",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Opportunity_surface",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Opportunity_surface",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Post_body_excerpt",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "Post_body_excerpt",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {},
+        "operation": "append",
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gid=0",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/REPLACE_WITH_GOOGLE_SHEET_ID/edit#gid=0",
+          "cachedResultName": "sheet1"
+        },
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "REPLACE_WITH_GOOGLE_SHEET_ID"
+        }
+      },
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "credential-id",
+          "name": "googleSheetsOAuth2Api Credential"
+        }
+      },
+      "typeVersion": 4.5
+    },
+    {
+      "id": "a0259ed2-0615-4e92-9e7e-cbff8c5bc0ce",
+      "name": "Merge 3 Inputs",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1240,
+        220
+      ],
+      "parameters": {
+        "mode": "combine",
+        "options": {},
+        "combineBy": "combineByPosition",
+        "numberInputs": 3
+      },
+      "typeVersion": 3
+    },
+    {
+      "id": "b7326fd0-5379-42ac-b355-ef6c3c1790f9",
+      "name": "Filter Posts By Features",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -460,
+        260
+      ],
+      "parameters": {
+        "options": {},
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "0823d10a-ad54-4d82-bcea-9dd236e97857",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.ups }}",
+              "rightValue": 5
+            },
+            {
+              "id": "bb8187aa-f0f1-4999-8d4b-bdc9abba0618",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.selftext }}",
+              "rightValue": ""
+            },
+            {
+              "id": "539f0f5c-025a-4f82-9b3a-2ef1ad3a2d96",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              },
+              "leftValue": "={{ DateTime.fromSeconds($json.created).toISO() }}",
+              "rightValue": "={{ $today.minus(180,'days').toISO() }}"
+            }
+          ]
+        }
+      },
+      "typeVersion": 2.2
+    },
+    {
+      "id": "11c45f28-97c0-4087-975c-651f27438956",
+      "name": "Filter Posts By Content",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        720,
+        260
+      ],
+      "parameters": {
+        "options": {},
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "d5d38c01-3a88-4767-b488-d9c04145bb8f",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "yes"
+            }
+          ]
+        }
+      },
+      "typeVersion": 2.2
+    },
+    {
+      "id": "efede239-eff5-4e38-b40d-3cefea040644",
+      "name": "Select Key Fields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -240,
+        260
+      ],
+      "parameters": {
+        "options": {},
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e5082ecc-3add-474e-bdb5-b8ad64729930",
+              "name": "upvotes",
+              "type": "string",
+              "value": "={{ $json.ups }}"
+            },
+            {
+              "id": "a92b5859-fbcc-40c2-95e0-452b12530d98",
+              "name": "subreddit_subscribers",
+              "type": "number",
+              "value": "={{ $json.subreddit_subscribers }}"
+            },
+            {
+              "id": "a846e21c-6cff-4521-9e0c-a32fa1305376",
+              "name": "reddit_post_body",
+              "type": "string",
+              "value": "={{ $json.selftext }}"
+            },
+            {
+              "id": "b8045389-684d-4872-9e32-9a6b5511eb2b",
+              "name": "url",
+              "type": "string",
+              "value": "={{ $json.url || 'https://www.reddit.com' + $json.permalink }}"
+            },
+            {
+              "id": "f182fedc-1b09-40fe-aeb5-2473263da442",
+              "name": "date",
+              "type": "string",
+              "value": "={{ DateTime.fromSeconds($json.created).toISO() }}"
+            },
+            {
+              "id": "2327076b-db85-479a-9398-5429285e20f7",
+              "name": "title",
+              "type": "string",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "id": "5b6be90d-1d80-4712-bd6c-bddd1ad74c9c",
+              "name": "subreddit",
+              "type": "string",
+              "value": "={{ $json.subreddit }}"
+            },
+            {
+              "id": "cbc021a1-8afb-47cc-a227-26d1983971a3",
+              "name": "comments",
+              "type": "number",
+              "value": "={{ $json.num_comments }}"
+            },
+            {
+              "id": "b3ed9bca-5382-4d5a-8e58-648c4a43449f",
+              "name": "permalink",
+              "type": "string",
+              "value": "={{ $json.permalink }}"
+            },
+            {
+              "id": "27d2b59d-58a9-4db9-82f3-4a39d52b9c1b",
+              "name": "reddit_id",
+              "type": "string",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "id": "ede428e1-034f-4d49-b36d-24a6d83bc189",
+              "name": "source_category",
+              "type": "string",
+              "value": "={{ ({ smallbusiness: 'SMB Operations', Entrepreneur: 'SMB Operations', startups: 'SMB Operations', SaaS: 'SaaS Founder Pain', indiehackers: 'SaaS Founder Pain', microsaas: 'SaaS Founder Pain', n8n: 'No-code Automation', Zapier: 'No-code Automation', Airtable: 'No-code Automation', Notion: 'No-code Automation', webdev: 'Developer Tools', devops: 'Developer Tools', sysadmin: 'Developer Tools', ecommerce: 'Commerce Ops', shopify: 'Commerce Ops', sales: 'Go-to-market Ops', marketing: 'Go-to-market Ops', productivity: 'Productivity' })[$json.subreddit] || 'General Opportunity' }}"
+            },
+            {
+              "id": "a60bae5b-6800-4276-b4d8-4249f358fa4c",
+              "name": "opportunity_surface",
+              "type": "string",
+              "value": "={{ $json.subreddit + ' / Reddit search' }}"
+            }
+          ]
+        }
+      },
+      "typeVersion": 3.4
+    },
+    {
+      "id": "1a99fdaa-6857-4210-a695-71ce531c1fa0",
+      "name": "Analysis Content  By AI",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        220,
+        120
+      ],
+      "parameters": {
+        "text": "Decide whether this Reddit post contains a real app/SaaS/product/service opportunity signal.\n\nReturn only yes or no.\n\nReturn yes only if the post includes a concrete unmet need such as:\n- frustration with an existing tool, workflow, vendor, manual spreadsheet process, support process, payment/accounting/CRM/ops process, or automation gap\n- explicit search for software, app, SaaS, marketplace, automation, integration, template, agency/service, or workaround\n- repeated or expensive operational pain that a buyer would plausibly pay to reduce\n\nReturn no if it is only news, promotion, hiring spam, broad motivation, meme, politics, pure advice with no monetizable pain, or a one-off personal situation with no repeatable buyer segment.\n\nPost title: {{ $json.title }}\nPost body: {{ $json.reddit_post_body }}\nSubreddit: {{ $json.subreddit }}\nSource category: {{ $json.source_category }}\nUpvotes: {{ $json.upvotes }}\nComments: {{ $json.comments }}",
+        "agent": "conversationalAgent",
+        "options": {},
+        "promptType": "define"
+      },
+      "typeVersion": 1.7
+    },
+    {
+      "id": "72b30080-e1f2-48b4-b816-ff43542cc6f1",
+      "name": "Get Posts",
+      "type": "n8n-nodes-base.reddit",
+      "position": [
+        -680,
+        260
+      ],
+      "parameters": {
+        "limit": 15,
+        "keyword": "={{ $json.keyword }}",
+        "operation": "search",
+        "subreddit": "={{ $json.subreddit }}",
+        "additionalFields": {
+          "sort": "relevance"
+        }
+      },
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "credential-id",
+          "name": "redditOAuth2Api Credential"
+        }
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "c4ecb9ec-4895-4b41-ba7e-185e3769ce41",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1180,
+        60
+      ],
+      "parameters": {
+        "width": 920,
+        "height": 160,
+        "content": "## 01 / REDDIT SOURCE MATRIX\n20 curated subreddit + keyword searches for SaaS, app, automation, marketplace, service and internal-tool opportunities. Edit **Build Reddit Search Matrix** to change sources.",
+        "color": 3
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "49735ff9-7f15-4050-9c46-6c13666479bd",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        180,
+        -120
+      ],
+      "parameters": {
+        "width": 620,
+        "height": 210,
+        "content": "## 03 / AI QUALIFICATION\nClassifies each Reddit post as **yes/no** for monetizable pain. Passes only concrete tool gaps, manual workflows, vendor frustration, expensive workarounds, buying intent or repeatable operational bottlenecks.",
+        "color": 5
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "17048a9e-6080-406e-a4e7-5d57406576e1",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -520,
+        60
+      ],
+      "parameters": {
+        "color": 4,
+        "width": 560,
+        "height": 160,
+        "content": "## 02 / QUALITY GATE\nKeeps only recent posts with body text and basic traction, then normalizes fields and removes duplicate Reddit IDs before AI spend."
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "5a412abc-3866-44ba-9ab0-8cc0a3e012f2",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        930,
+        -160
+      ],
+      "parameters": {
+        "color": 6,
+        "width": 820,
+        "height": 220,
+        "content": "## 04 / OPPORTUNITY BRIEF + SHEETS\nProduces summary, buyer segment, opportunity type, product ideas, MVP shape, scoring, validation questions, 7-day first offer and risk notes. Final rows append to Google Sheets."
+      },
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const searches = [\n  { source_category: 'SMB Operations', subreddit: 'smallbusiness', keyword: 'looking for a solution' },\n  { source_category: 'SMB Operations', subreddit: 'smallbusiness', keyword: 'what software do you use' },\n  { source_category: 'SMB Operations', subreddit: 'Entrepreneur', keyword: 'manual process' },\n  { source_category: 'SMB Operations', subreddit: 'startups', keyword: 'pain point' },\n  { source_category: 'SaaS Founder Pain', subreddit: 'SaaS', keyword: 'alternative to' },\n  { source_category: 'SaaS Founder Pain', subreddit: 'SaaS', keyword: 'looking for a tool' },\n  { source_category: 'SaaS Founder Pain', subreddit: 'indiehackers', keyword: 'is there an app' },\n  { source_category: 'SaaS Founder Pain', subreddit: 'microsaas', keyword: 'recommend software' },\n  { source_category: 'No-code Automation', subreddit: 'n8n', keyword: 'how do you automate' },\n  { source_category: 'No-code Automation', subreddit: 'Zapier', keyword: 'workflow problem' },\n  { source_category: 'No-code Automation', subreddit: 'Airtable', keyword: 'manual' },\n  { source_category: 'No-code Automation', subreddit: 'Notion', keyword: 'template problem' },\n  { source_category: 'Developer Tools', subreddit: 'webdev', keyword: 'tool for' },\n  { source_category: 'Developer Tools', subreddit: 'devops', keyword: 'frustrated' },\n  { source_category: 'Developer Tools', subreddit: 'sysadmin', keyword: 'automate' },\n  { source_category: 'Commerce Ops', subreddit: 'ecommerce', keyword: 'app for' },\n  { source_category: 'Commerce Ops', subreddit: 'shopify', keyword: 'alternative to' },\n  { source_category: 'Go-to-market Ops', subreddit: 'sales', keyword: 'CRM problem' },\n  { source_category: 'Go-to-market Ops', subreddit: 'marketing', keyword: 'too expensive' },\n  { source_category: 'Productivity', subreddit: 'productivity', keyword: 'spreadsheet' }\n];\n\nreturn searches.map(search => ({ json: search }));"
+      },
+      "id": "46d8deab-7ee3-433b-9db1-af7a5cce921c",
+      "name": "Build Reddit Search Matrix",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\nconst output = [];\n\nfor (const item of items) {\n  const key = item.json.reddit_id || item.json.url || `${item.json.subreddit}:${item.json.title}`;\n  if (!key || seen.has(key)) continue;\n  seen.add(key);\n  output.push(item);\n}\n\nreturn output;"
+      },
+      "id": "0cb5098a-5c11-44ba-b26a-bc093752112c",
+      "name": "Dedupe Reddit Posts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        260
+      ]
+    }
+  ],
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c78fd7b7-d3e4-48f2-9f82-81ff71ef49a7",
+  "connections": {
+    "Get Posts": {
+      "main": [
+        [
+          {
+            "node": "Filter Posts By Features",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Input": {
+      "main": [
+        [
+          {
+            "node": "Filter Posts By Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge 3 Inputs": {
+      "main": [
+        [
+          {
+            "node": "Output The Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analysis Content  By AI",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Key Fields": {
+      "main": [
+        [
+          {
+            "node": "Dedupe Reddit Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Post Summarization",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output The Results": {
+      "main": [
+        []
+      ]
+    },
+    "Post Summarization": {
+      "main": [
+        [
+          {
+            "node": "Merge 3 Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analysis Content  By AI": {
+      "main": [
+        [
+          {
+            "node": "Merge Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Posts By Content": {
+      "main": [
+        [
+          {
+            "node": "Post Summarization",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pain Point + Opportunity Report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge 3 Inputs",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Filter Posts By Features": {
+      "main": [
+        [
+          {
+            "node": "Select Key Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Build Reddit Search Matrix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pain Point + Opportunity Report": {
+      "main": [
+        [
+          {
+            "node": "Merge 3 Inputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Build Reddit Search Matrix": {
+      "main": [
+        [
+          {
+            "node": "Get Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dedupe Reddit Posts": {
+      "main": [
+        [
+          {
+            "node": "Merge Input",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Analysis Content  By AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,110 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="2"><title>Workflow Tree</title><style>
+html,body{margin:0;height:100%;background:#0b1220;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#0f172a;}
+.wrap{height:100vh;overflow:auto;background:#0b1220;padding:24px;}
+.canvas{min-width:3560px;width:3560px;height:1250px;background:#f8fafc;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+svg{display:block;width:3560px;height:1250px;}
+.title{font-size:54px;font-weight:900;letter-spacing:0;fill:#0f172a;}
+.kicker{font-size:18px;font-weight:900;letter-spacing:.12em;fill:#16a34a;}
+.desc{font-size:22px;font-weight:600;fill:#475569;}
+.laneText{font-size:18px;font-weight:900;letter-spacing:.08em;fill:#475569;}
+.edge{fill:none;stroke:#334155;stroke-width:4;opacity:.72;}
+.node rect{filter:url(#shadow);}
+.nt{font-size:24px;font-weight:900;fill:#0f172a;}
+.ns{font-size:16px;font-weight:650;fill:#64748b;}
+.legendTitle{font-size:22px;font-weight:900;fill:#0f172a;}
+.legendText{font-size:20px;font-weight:650;fill:#334155;}
+</style></head><body><div class="wrap"><div class="canvas"><svg viewBox="0 0 3560 1250" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/></marker>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.14"/></filter>
+</defs>
+<rect x="0" y="0" width="3560" height="1250" fill="#f8fafc"/>
+<text x="80" y="90" class="kicker">DEV / xCodeWraith · WORKFLOW TREE</text>
+<text x="80" y="150" class="title">Reddit Pain Point & SaaS Opportunity Scanner</text>
+<text x="80" y="195" class="desc">Multi-source Reddit opportunity scanner: search matrix → filters → AI qualification → opportunity report → Google Sheets.</text>
+<g class="lane"><rect x="60" y="230" width="1530" height="560" rx="18" fill="#eef6ff" stroke="#bfdbfe"/><text x="90" y="270" class="laneText">DATA INGESTION + CLEANING</text></g>
+<g class="lane"><rect x="1710" y="170" width="520" height="270" rx="18" fill="#effdf5" stroke="#bbf7d0"/><text x="1740" y="210" class="laneText">AI QUALIFICATION</text></g>
+<g class="lane"><rect x="1710" y="470" width="430" height="270" rx="18" fill="#fff7ed" stroke="#fed7aa"/><text x="1740" y="510" class="laneText">DECISION GATE</text></g>
+<g class="lane"><rect x="2400" y="250" width="790" height="530" rx="18" fill="#f5f3ff" stroke="#ddd6fe"/><text x="2430" y="290" class="laneText">REPORT GENERATION</text></g>
+<g class="lane"><rect x="3240" y="390" width="300" height="270" rx="18" fill="#ecfdf5" stroke="#99f6e4"/><text x="3270" y="430" class="laneText">OUTPUT</text></g>
+<g filter="url(#shadow)"><path d="M 350 576 C 370.0 576, 370.0 576, 390 576" class="edge" marker-end="url(#arrow)"/><path d="M 660 576 C 700.0 576, 700.0 576, 740 576" class="edge" marker-end="url(#arrow)"/><path d="M 1010 576 C 1045.0 576, 1045.0 576, 1080 576" class="edge" marker-end="url(#arrow)"/><path d="M 1350 576 C 1390.0 576, 1390.0 576, 1430 576" class="edge" marker-end="url(#arrow)"/><path d="M 1700 576 C 1740.0 576, 1740.0 576, 1780 576" class="edge" marker-end="url(#arrow)"/><path d="M 2050 576 C 1915.0 576, 1915.0 306, 1780 306" class="edge" marker-end="url(#arrow)"/><path d="M 2050 576 C 2090.0 576, 2090.0 446, 2130 446" class="edge" marker-end="url(#arrow)"/><path d="M 2050 306 C 2090.0 306, 2090.0 446, 2130 446" class="edge" marker-end="url(#arrow)"/><path d="M 2400 446 C 2265.0 446, 2265.0 676, 2130 676" class="edge" marker-end="url(#arrow)"/><path d="M 2400 676 C 2440.0 676, 2440.0 416, 2480 416" class="edge" marker-end="url(#arrow)"/><path d="M 2400 676 C 2440.0 676, 2440.0 676, 2480 676" class="edge" marker-end="url(#arrow)"/><path d="M 2400 676 C 2615.0 676, 2615.0 556, 2830 556" class="edge" marker-end="url(#arrow)"/><path d="M 2750 416 C 2790.0 416, 2790.0 556, 2830 556" class="edge" marker-end="url(#arrow)"/><path d="M 2750 676 C 2790.0 676, 2790.0 556, 2830 556" class="edge" marker-end="url(#arrow)"/><path d="M 3100 556 C 3140.0 556, 3140.0 556, 3180 556" class="edge" marker-end="url(#arrow)"/><g class="node" data-node="Trigger">
+<rect x="80" y="520" width="270" height="112" rx="10" fill="white" stroke="#111827" stroke-width="4"/>
+<rect x="80" y="520" width="270" height="12" rx="6" fill="#111827"/>
+<text x="100" y="567" class="nt">Manual Trigger</text>
+<text x="100" y="597" class="ns">Starts test execution</text>
+</g><g class="node" data-node="Matrix">
+<rect x="390" y="520" width="270" height="112" rx="10" fill="white" stroke="#2563eb" stroke-width="4"/>
+<rect x="390" y="520" width="270" height="12" rx="6" fill="#2563eb"/>
+<text x="410" y="567" class="nt">Build Reddit Search Matrix</text>
+<text x="410" y="597" class="ns">20 subreddit + keyword searches</text>
+</g><g class="node" data-node="Reddit">
+<rect x="740" y="520" width="270" height="112" rx="10" fill="white" stroke="#ff4500" stroke-width="4"/>
+<rect x="740" y="520" width="270" height="12" rx="6" fill="#ff4500"/>
+<text x="760" y="567" class="nt">Get Posts</text>
+<text x="760" y="597" class="ns">Search Reddit per matrix row</text>
+</g><g class="node" data-node="Feature">
+<rect x="1080" y="520" width="270" height="112" rx="10" fill="white" stroke="#f59e0b" stroke-width="4"/>
+<rect x="1080" y="520" width="270" height="12" rx="6" fill="#f59e0b"/>
+<text x="1100" y="567" class="nt">Filter Posts By Features</text>
+<text x="1100" y="597" class="ns">Upvotes &gt; 5 · body not empty · 180 days</text>
+</g><g class="node" data-node="Fields">
+<rect x="1430" y="520" width="270" height="112" rx="10" fill="white" stroke="#64748b" stroke-width="4"/>
+<rect x="1430" y="520" width="270" height="12" rx="6" fill="#64748b"/>
+<text x="1450" y="567" class="nt">Select Key Fields</text>
+<text x="1450" y="597" class="ns">Normalize title, subreddit, URL, body, score data</text>
+</g><g class="node" data-node="Dedupe">
+<rect x="1780" y="520" width="270" height="112" rx="10" fill="white" stroke="#2563eb" stroke-width="4"/>
+<rect x="1780" y="520" width="270" height="12" rx="6" fill="#2563eb"/>
+<text x="1800" y="567" class="nt">Dedupe Reddit Posts</text>
+<text x="1800" y="597" class="ns">Remove duplicate Reddit IDs</text>
+</g><g class="node" data-node="GateAI">
+<rect x="1780" y="250" width="270" height="112" rx="10" fill="white" stroke="#16a34a" stroke-width="4"/>
+<rect x="1780" y="250" width="270" height="12" rx="6" fill="#16a34a"/>
+<text x="1800" y="297" class="nt">Analysis Content By AI</text>
+<text x="1800" y="327" class="ns">AI yes/no monetizable pain gate</text>
+</g><g class="node" data-node="MergeInput">
+<rect x="2130" y="390" width="270" height="112" rx="10" fill="white" stroke="#7c3aed" stroke-width="4"/>
+<rect x="2130" y="390" width="270" height="12" rx="6" fill="#7c3aed"/>
+<text x="2150" y="437" class="nt">Merge Input</text>
+<text x="2150" y="467" class="ns">Join AI decision with original post</text>
+</g><g class="node" data-node="ContentFilter">
+<rect x="2130" y="620" width="270" height="112" rx="10" fill="white" stroke="#f59e0b" stroke-width="4"/>
+<rect x="2130" y="620" width="270" height="12" rx="6" fill="#f59e0b"/>
+<text x="2150" y="667" class="nt">Filter Posts By Content</text>
+<text x="2150" y="697" class="ns">Only yes continues</text>
+</g><g class="node" data-node="Summary">
+<rect x="2480" y="360" width="270" height="112" rx="10" fill="white" stroke="#16a34a" stroke-width="4"/>
+<rect x="2480" y="360" width="270" height="12" rx="6" fill="#16a34a"/>
+<text x="2500" y="407" class="nt">Post Summarization</text>
+<text x="2500" y="437" class="ns">Compact post summary</text>
+</g><g class="node" data-node="Report">
+<rect x="2480" y="620" width="270" height="112" rx="10" fill="white" stroke="#16a34a" stroke-width="4"/>
+<rect x="2480" y="620" width="270" height="12" rx="6" fill="#16a34a"/>
+<text x="2500" y="667" class="nt">Pain Point + Opportunity Report</text>
+<text x="2500" y="697" class="ns">Buyer · MVP · score · validation · offer</text>
+</g><g class="node" data-node="Merge3">
+<rect x="2830" y="500" width="270" height="112" rx="10" fill="white" stroke="#7c3aed" stroke-width="4"/>
+<rect x="2830" y="500" width="270" height="12" rx="6" fill="#7c3aed"/>
+<text x="2850" y="547" class="nt">Merge 3 Inputs</text>
+<text x="2850" y="577" class="ns">Metadata + summary + report</text>
+</g><g class="node" data-node="Sheets">
+<rect x="3180" y="500" width="270" height="112" rx="10" fill="white" stroke="#0f766e" stroke-width="4"/>
+<rect x="3180" y="500" width="270" height="12" rx="6" fill="#0f766e"/>
+<text x="3200" y="547" class="nt">Output The Results</text>
+<text x="3200" y="577" class="ns">Append opportunity row to Google Sheets</text>
+</g></g>
+<g class="legend">
+<rect x="80" y="930" width="870" height="220" rx="14" fill="white" stroke="#e2e8f0"/>
+<text x="110" y="975" class="legendTitle">QA STATUS</text>
+<text x="110" y="1025" class="legendText">✓ 19 nodes · 15 connections · no missing references</text>
+<text x="110" y="1065" class="legendText">✓ 20 subreddit/keyword combinations · duplicate Reddit IDs removed</text>
+<text x="110" y="1105" class="legendText">✓ Bench.co sample data removed · pinData empty · postcontent renamed</text>
+</g>
+<g class="legend">
+<rect x="990" y="930" width="870" height="220" rx="14" fill="white" stroke="#e2e8f0"/>
+<text x="1020" y="975" class="legendTitle">EXECUTION REQUIREMENTS</text>
+<text x="1020" y="1025" class="legendText">! Select real Reddit OAuth2, OpenAI API and Google Sheets OAuth2 credentials</text>
+<text x="1020" y="1065" class="legendText">! Google Sheet must contain mapped output columns or mapping must be refreshed</text>
+<text x="1020" y="1105" class="legendText">! Start with manual test before activating scheduled production runs</text>
+</g>
+</svg></div></div></body></html>
